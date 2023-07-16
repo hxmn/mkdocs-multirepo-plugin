@@ -19,7 +19,7 @@ else
   url_to_use="$url"
 fi
 
-echo "git clone --branch $branch --depth 1 --filter=blob:none --sparse $url_to_use $name"
+echo "git clone --branch $branch --depth 1 --filter=blob:none --sparse $url_to_use $name" >&2
 
 git clone --branch "$branch" --depth 1 --filter=blob:none --sparse $url_to_use "$name" || exit 1
 

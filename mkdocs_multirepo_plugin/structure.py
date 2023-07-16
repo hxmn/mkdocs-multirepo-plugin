@@ -189,7 +189,7 @@ class Repo:
     async def sparse_clone(self, paths: List[str] = None) -> Tuple[str, str]:
         """sparse clones a Git repo asynchronously"""
         paths = paths or self.paths
-        gitlab_ci_token = os.getenv("GITLAB_CI_TOKEN", None)
+        gitlab_ci_token = os.getenv("GITLAB_CI_TOKEN", None) or os.getenv("CI_JOB_TOKEN", None)
         url = self.url
         if gitlab_ci_token:
             print("Using GitLab CI token to clone repo")

@@ -193,7 +193,7 @@ class Repo:
         url = self.url
         if gitlab_ci_token:
             print("Using GitLab CI token to clone repo")
-            url = url.replace("git@", f"https://gitlab-ci-token:{gitlab_ci_token}@")
+            url = url.replace(":", "/").replace("git@", f"https://gitlab-ci-token:{gitlab_ci_token}@")
         args = [url, self.name, self.branch] + paths
         if git_supports_sparse_clone():
             await execute_bash_script("sparse_clone.sh", args, self.temp_dir)

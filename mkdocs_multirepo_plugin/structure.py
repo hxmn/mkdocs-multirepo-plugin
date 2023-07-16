@@ -2,6 +2,7 @@ import ast
 import asyncio
 import os
 import shutil
+import sys
 import time
 from pathlib import Path
 from typing import Callable, Dict, List, Optional, Tuple, Union
@@ -188,7 +189,12 @@ class Repo:
     async def sparse_clone(self, paths: List[str] = None) -> Tuple[str, str]:
         """sparse clones a Git repo asynchronously"""
         paths = paths or self.paths
-        args = [self.url, self.name, self.branch] + paths
+        gitlab_ci_token = os.getenv("GITLAB_CI_TOKEN", None)
+        url = self.url
+        if gitlab_ci_token:
+            print("Using GitLab CI token to clone repo")
+            url = url.replace("git@", f"https://gitlab-ci-token:{gitlab_ci_token}@")
+        args = [url, self.name, self.branch] + paths
         if git_supports_sparse_clone():
             await execute_bash_script("sparse_clone.sh", args, self.temp_dir)
         else:
